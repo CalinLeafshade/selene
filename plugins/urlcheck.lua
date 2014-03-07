@@ -1,9 +1,8 @@
 
-local class  = require('middleclass')
 local http = require("socket.http")
 local ltn12 = require('ltn12')
 
-local url = class("url", Plugin)
+local url = Plugin:subclass("url")
 
 function url:isHTML(u)
     r,c,h = http.request{

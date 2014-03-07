@@ -8,8 +8,6 @@ require('selene')
 
 --find conf
 
-
-
 local home = os.getenv("HOME")
 
 local f,err = loadfile(home .. "/.config/selene/selene.conf")

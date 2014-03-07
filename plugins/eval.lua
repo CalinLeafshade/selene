@@ -1,6 +1,5 @@
-local class = require('middleclass')
 
-local eval = class("eval", Plugin)
+local eval = Plugin:subclass("eval")
 
 local disallowed = {"for", "while", "repeat"}
 

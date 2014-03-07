@@ -1,4 +1,6 @@
 
+require('dumper')
+
 local remind = Plugin:subclass("remind")
 
 local secondsIn = 
@@ -12,6 +14,11 @@ local secondsIn =
     decades = 315360000
 }
 
+function remind:initialize(selene)
+	Plugin.initialize(self,selene)
+	self:load()
+end
+
 function remind:add(nick,time,text,channel)
     self.reminds = self.reminds or {}
     table.insert(self.reminds, {channel = channel, nick = nick, time = os.time() + time, text = text})
@@ -24,6 +31,31 @@ function remind:check()
             table.remove(self.reminds, i)
         end
     end
+end
+
+function remind:load()
+	local dir = self.selene:getSaveDir("remind")
+	local fn,err = loadfile(dir .. "/remind.lua")
+	if fn then
+		self.reminds = fn()
+	else
+		self.selene:print(err)
+	end
+end
+
+function remind:save()
+	local dir = self.selene:getSaveDir("remind")
+	local f,err = io.open(dir .. "/remind.lua","w")
+	if f then
+		f:write(DataDumper(self.reminds or {}))
+		f:close()
+	else
+		self.selene:error(err)
+	end
+end
+
+function remind:OnShutdown()
+	self:save()
 end
 
 function remind:OnTick()

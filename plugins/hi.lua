@@ -1,6 +1,5 @@
-local class = require('middleclass')
 
-local hi = class("hi", Plugin)
+local hi = Plugin:subclass("hi")
 
 function hi:initialize(selene)
     self.selene = selene

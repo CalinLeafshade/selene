@@ -1,9 +1,7 @@
 
-local class = require('middleclass')
-
 local logDir = "/home/steve/public_html/selene/logs"
 
-local logger = class("logger", Plugin)
+local logger = Plugin:subclass("logger")
 
 function logger:initialize(selene)
     self.selene = selene
@@ -19,6 +17,10 @@ function logger:log(channel, text)
     else
         print(err)
     end
+end
+
+function logger:OnJoin(user, channel)
+	self:log(channel, "* " .. user.nick .. " has joined the channel." 
 end
 
 function logger:OnChat(user,channel,message)

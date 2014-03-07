@@ -1,8 +1,8 @@
 
-local class = require('middleclass')
+
 require('dumper')
 
-local tell = class("tell", Plugin)
+local tell = Plugin:subclass("tell")
 
 function tell:initialize(selene)
     Plugin.initialize(self,selene)
