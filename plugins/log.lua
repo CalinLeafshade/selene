@@ -20,7 +20,7 @@ function logger:log(channel, text)
 end
 
 function logger:OnJoin(user, channel)
-	self:log(channel, "* " .. user.nick .. " has joined the channel." 
+	self:log(channel, "* " .. user.nick .. " has joined the channel.")
 end
 
 function logger:OnChat(user,channel,message)
