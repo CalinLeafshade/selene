@@ -20,7 +20,7 @@ end
 
 function tell:check(nick,channel)
     for i,v in ipairs(self.tells) do
-        if v.to == nick then
+        if v.to:lower() == nick:lower() then
             self:tell(v,channel)
             table.remove(self.tells, i)
         end
