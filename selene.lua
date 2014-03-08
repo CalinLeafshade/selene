@@ -17,7 +17,9 @@ function Selene:initialize(conf)
     assert(s, "No server given")
     assert(s.host, "No server address given")
     s.port = s.port or 6667
-    self.irc = irc.new{ nick = "Selene", username = "Selene", realname = "Selene" }
+	self.answersTo = conf.answersTo or {}
+	table.insert(self.answersTo, conf.nick or "Selene")
+    self.irc = irc.new{ nick = conf.nick or "Selene", username = "Selene", realname = "Selene" }
 
     --load plugins 
     -- built in
@@ -87,15 +89,26 @@ end
 
 function Selene:isDirect(message)
     message = trim(message)
-    if string.match(message:lower(), "^selene%W") then
-        return true, trim(string.sub(message, 8))
-    elseif string.match(message:lower(), "^sel%W") then
-        return true, trim(string.sub(message,5))
-    elseif string.match(message:lower(), "sel$") then
-        return true, trim(string.sub(message,1,message:len() - 3))
-    elseif string.match(message:lower(), "selene$") then
-        return true, trim(string.sub(message,1,message:len() - 6))
-    end
+	local patterns = {}
+	for i,v in ipairs(self.answersTo) do
+		v = v:lower()
+		table.insert(patterns, "^" .. v .. "%W")
+		table.insert(patterns, "%s" .. v .. "$")
+	end
+	local lowerMessage = message:lower()
+	for i,v in ipairs(patterns) do
+		if string.match(lowerMessage, v) then
+			if v:sub(1,1) == "^" then
+				return true, trim(string.sub(message, v:len() - 1))
+			else
+				return true, trim(string.sub(message, 1, message:len() - (v:len() - 2)))
+			end
+		end
+	end
+end
+
+function Selene.ircColor(...)
+	return irc.color(...)
 end
 
 function Selene:formatTime(t)

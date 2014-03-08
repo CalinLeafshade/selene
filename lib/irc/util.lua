@@ -100,7 +100,11 @@ color = {
 local colByte = char(3)
 setmetatable(color, {__call = function(_, text, colornum)
 	colornum = type(colornum) == "string" and assert(color[colornum], "Invalid color '"..colornum.."'") or colornum
-	return table.concat{colByte, tostring(colornum), text, colByte}
+	colornum = tostring(colornum)
+	if colornum:len() == 1 then
+		colornum = "0" .. colornum
+	end
+	return table.concat{colByte, colornum, text, colByte}
 end})
 
 local boldByte = char(2)

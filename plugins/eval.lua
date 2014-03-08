@@ -17,7 +17,7 @@ function eval:OnChat(user,channel,message)
         if fn then
             local ok, val = pcall(fn)
             if ok then
-                self.selene:sendChat(channel, "The answer is: " .. val)
+                self.selene:sendChat(channel, "The answer is: " .. self.selene.ircColor(val,2))
             else
                 self.selene:sendChat(channel, "There was an error running your expression")
             end

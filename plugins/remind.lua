@@ -27,7 +27,7 @@ end
 function remind:check()
     for i,v in ipairs(self.reminds or {}) do
         if v.time < os.time() then
-            self.selene:sendChat(v.channel, v.nick .. ", you asked me to remind you: " .. v.text)
+            self.selene:sendChat(v.channel, self.selene.ircColor(v.nick,2) .. ", you asked me to remind you: " .. self.selene.ircColor(v.text,4))
             table.remove(self.reminds, i)
         end
     end

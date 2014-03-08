@@ -15,7 +15,11 @@ function tell:add(from,to,message)
 end
 
 function tell:tell(tell,channel) -- lol
-    self.selene:sendChat(channel, ("%s, %s left this message for you %s ago, %s"):format(tell.to, tell.from, self.selene:formatTime(os.difftime(os.time(), tell.time)), tell.message))
+	local col = self.selene.ircColor
+	local time = self.selene:formatTime(os.difftime(os.time(), tell.time))
+	local s = table.concat{ col(tell.to,2), ", ", col(tell.from,4), " left this message for you ",  col(time,3), " ago, ", col(tell.message,6)}
+	print(s)
+    self.selene:sendChat(channel, s)
 end
 
 function tell:check(nick,channel)
