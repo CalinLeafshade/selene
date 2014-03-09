@@ -25,7 +25,9 @@ function remind:add(nick,time,text,channel)
 end
 
 function remind:check()
-    for i,v in ipairs(self.reminds or {}) do
+	if not self.reminds or #self.reminds == 0 then return end
+    for i=#self.reminds,1,-1 do
+		local v = self.reminds[i]
         if v.time < os.time() then
             self.selene:sendChat(v.channel, self.selene.ircColor(v.nick,2) .. ", you asked me to remind you: " .. self.selene.ircColor(v.text,4))
             table.remove(self.reminds, i)

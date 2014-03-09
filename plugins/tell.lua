@@ -23,12 +23,17 @@ function tell:tell(tell,channel) -- lol
 end
 
 function tell:check(nick,channel)
-    for i,v in ipairs(self.tells) do
+	local toTell = {}
+	for i=#self.tells,1,-1 do
+		local v = self.tells[i]
         if v.to:lower() == nick:lower() then
-            self:tell(v,channel)
+            table.insert(toTell,v)
             table.remove(self.tells, i)
         end
     end
+	for i,v in ipairs(toTell) do
+		self:tell(v, channel)
+	end
 end
 
 function tell:load()
