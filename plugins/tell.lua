@@ -27,7 +27,7 @@ function tell:check(nick,channel)
 	for i=#self.tells,1,-1 do
 		local v = self.tells[i]
         if v.to:lower() == nick:lower() then
-            table.insert(toTell,v)
+            table.insert(toTell,1,v)
             table.remove(self.tells, i)
         end
     end
