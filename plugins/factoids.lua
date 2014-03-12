@@ -77,7 +77,7 @@ function factoids:OnChat(user,channel,message)
                 self.selene:sendChat(channel, content)
             else
                 local col = self.selene.ircColor
-                self.selene:sendChat(channel, table.concat{col(user.nick, 2), " ", f.key, " is ", f.content})
+                self.selene:sendChat(channel, table.concat{col(user.nick, 2), ", ", f.key, " is ", f.content})
             end
         else
             local key,content = mess:match("(.+)%sis%s(.+)")
