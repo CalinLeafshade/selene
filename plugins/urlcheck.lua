@@ -44,6 +44,7 @@ end
 
 function url:OnChat(user,channel,message)
     for u in message:gmatch("https?://%S*") do
+        u = string.gsub(u,"https://", "http://")
         local t = self:checkURL(u)
         if t then
             self.selene:sendChat(channel, unesc(t))
