@@ -38,13 +38,12 @@ function url:checkURL(u)
             sink = ltn12.sink.table(t)
         }
         local data = table.concat(t)
-        local t = string.match(data, "<title>.+</title>")
-        if t then return t:sub(8,-9) end
+        return string.match(data, "<title>(.+)</title>")
     end
 end
 
 function url:OnChat(user,channel,message)
-    for u in message:gmatch("http://%S*") do
+    for u in message:gmatch("https?://%S*") do
         local t = self:checkURL(u)
         if t then
             self.selene:sendChat(channel, unesc(t))
