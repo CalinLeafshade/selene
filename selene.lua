@@ -1,5 +1,7 @@
 require('irc')
 require('lfs')
+json = require('json')
+
 local colors = require('ansicolors')
 
 local class = require('middleclass')
@@ -17,6 +19,7 @@ function Selene:initialize(conf)
     assert(s, "No server given")
     assert(s.host, "No server address given")
     s.port = s.port or 6667
+    self.publicFolder = conf.publicFolder or (os.getenv("HOME") .. "/public_html")
 	self.answersTo = conf.answersTo or {}
 	table.insert(self.answersTo, conf.nick or "Selene")
     self.irc = irc.new{ nick = conf.nick or "Selene", username = "Selene", realname = "Selene" }
@@ -69,6 +72,11 @@ function Selene:initialize(conf)
         self:print("%{green}Joining " .. v)
         self.irc:join(v)
     end
+end
+
+function Selene:getPublicFolder()
+    lfs.mkdir(self.publicFolder)
+    return self.publicFolder
 end
 
 function Selene:sendChat(target, message)

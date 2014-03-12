@@ -1,5 +1,4 @@
 
-local logDir = "/home/steve/public_html/selene/logs"
 
 local logger = Plugin:subclass("logger")
 
@@ -8,6 +7,8 @@ function logger:initialize(selene)
 end
 
 function logger:log(channel, text)
+    local logDir = self.selene:getPublicFolder() .. "/logs"
+    lfs.mkdir(logDir)
     lfs.mkdir(logDir .. "/" .. channel:sub(2))
     local file = logDir .. "/" .. channel:sub(2) .. "/" .. os.date("%d-%m-%y") .. ".log"
     local f,err = io.open(file,"a+")
