@@ -159,8 +159,8 @@ function twitch:getStream(user)
         sink = ltn12.sink.table(t)
     }
     local data = table.concat(t)
-    local decoded = pcall(function() json:decode(data) end)
-    if decoded and type(decoded) == "table" then
+    local stat, decoded = pcall(function() json:decode(data) end)
+    if stat and decoded and type(decoded) == "table" then
 		return decoded.stream
 	else
 		self.selene:error("Couldnt encode from twitch: " .. data)
