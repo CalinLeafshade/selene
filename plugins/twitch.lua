@@ -159,7 +159,7 @@ function twitch:getStream(user)
         sink = ltn12.sink.table(t)
     }
     local data = table.concat(t)
-    local decoded = json:decode(data)
+    local decoded = pcall(function() json:decode(data) end)
     if decoded and type(decoded) == "table" then
 		return decoded.stream
 	else
