@@ -81,18 +81,20 @@ end
 
 function twitch:update(loud)
     for i,v in pairs(self.subs) do
-        local stream = self:getStream(i)
-        if stream and not v.stream then
-            if loud then
-                self.selene:sendChat(v.ircChannel, i .. " has just started streaming on twitch.tv: http://www.twitch.tv/" .. i)
-            end
-            v.stream = stream
-        elseif not stream and v.stream then
-            if loud then
-                self.selene:sendChat(v.ircChannel, i .. " has stopped streaming.")
-            end
-            v.stream = nil
-        end
+        local success, stream = pcall(function() return self:getStream(i) end)
+		if success then
+			if stream and not v.stream then
+				if loud then
+					self.selene:sendChat(v.ircChannel, i .. " has just started streaming on twitch.tv: http://www.twitch.tv/" .. i)
+				end
+				v.stream = stream
+			elseif not stream and v.stream then
+				if loud then
+					self.selene:sendChat(v.ircChannel, i .. " has stopped streaming.")
+				end
+				v.stream = nil
+			end
+		end
     end
 end
 
@@ -143,11 +145,17 @@ function twitch:OnChat(user,channel,message)
                 self.selene:sendChat(channel, "This is the current sublist: " .. list)
             end
         elseif cmd == "status" then
-            if self:getStream(arg) then
-                self.selene:sendChat(channel, arg .. " is currently streaming: http://www.twitch.tv/" .. arg)
-            else
-                self.selene:sendChat(channel, arg .. " is not current streaming.")
-            end
+			local success, stream = pcall(function() return self:getStream(arg) end)
+			if success then
+				if stream then
+					self.selene:sendChat(channel, arg .. " is currently streaming: http://www.twitch.tv/" .. arg)
+				else
+					self.selene:sendChat(channel, arg .. " is not current streaming.")
+				end
+			else
+				if stream then self.selene:error(stream) end
+				self.selene:sendChat(channel, "Failed to get stream info.")
+			end
         end
     end 
 end
@@ -163,7 +171,7 @@ function twitch:getStream(user)
     if stat and decoded and type(decoded) == "table" then
 		return decoded.stream
 	else
-		self.selene:error("Couldnt encode from twitch: " .. data)
+		error("Couldnt encode from twitch: " .. data)
 	end
 end
 

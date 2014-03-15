@@ -65,8 +65,8 @@ end
 function tell:OnChat(user,channel,message)
     self:check(user.nick,channel)
     local direct, mess = self.selene:isDirect(message)
-    if direct and mess:lower():match("tell%s%w+%s+[%w+%s*]+") then
-        local to = mess:match("[Tt][Ee][Ll][Ll]%s%w+"):sub(6)
+    if direct and mess:lower():match("^tell%s%w+%s+[%w+%s*]+") then
+        local to = mess:match("^[Tt][Ee][Ll][Ll]%s%w+"):sub(6)
         local text = mess:sub(6 + to:len() + 1)
         self:add(user.nick, to, text)
         self.selene:sendChat(channel, "Ok " .. user.nick .. ", I'll tell " .. to .. " that next time I see them.")
