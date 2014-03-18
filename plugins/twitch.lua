@@ -7,7 +7,7 @@ function twitch:initialize(...)
     Plugin.initialize(self,...)
     self.subs = {}
     self.lastUpdate = os.time()
-    self.updateFrequency = 10
+    self.updateFrequency = 3
     self:load()
     self:update(false)
 end
