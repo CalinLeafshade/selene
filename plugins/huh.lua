@@ -1,7 +1,7 @@
 -- Plugin to catch all direct but uncaught messages
 
 local huh = Plugin:subclass("huh")
-
+huh.priority = math.huge
 local huhs = {"Huh?", "What?", "I don't understand.", "You trippin'?" }
 
 function huh:OnChat(user,channel,message)

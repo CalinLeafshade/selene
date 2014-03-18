@@ -72,17 +72,21 @@ function factoids:OnChat(user,channel,message)
             else
                 self.selene:sendChat(channel, "That's not in the dictionary.")
             end
+            return true
         elseif self.factoids[mess:lower()] then
             local f = self.factoids[mess:lower()]
             if f.content:match("<reply>") then
                 local content = trim(f.content:gsub("<reply>",""))
+                content = content:gsub("%$who", user.nick)
                 self.selene:sendChat(channel, content)
             else
                 local col = self.selene.ircColor
-                self.selene:sendChat(channel, table.concat{col(user.nick, 2), ", ", f.key, " is ", f.content})
+                local content = f.content:gsub("%$who", user.nick)
+                self.selene:sendChat(channel, table.concat{col(user.nick, 2), ", ", f.key, " is ", content})
             end
+            return true
         else
-            local key,content = mess:match("(.+)%sis%s(.+)")
+            local key,content = mess:match("^(.+)%sis%s(.+)$")
             if key and content then
                 if self:add(key,content,user.nick) then
                     self.selene:sendChat(channel,"Ok, I've added that to the dictionary")
@@ -90,6 +94,7 @@ function factoids:OnChat(user,channel,message)
                     self.selene:sendChat(channel,"That's already in the dictionary. Use 'forget' to remove it")
                 end
             end
+            return true
         end
     end
 end
