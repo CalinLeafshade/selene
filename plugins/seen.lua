@@ -5,8 +5,8 @@ function seen:OnChat(user,channel,message)
     self.nicks = self.nicks or {}
     local direct, mess = self.selene:isDirect(message)
     if direct then
-        local cmd,nick = mess:match("(%w+)%s(%w+)")
-        if cmd and cmd:lower() == "seen" and nick then
+        local nick = mess:match("^[Ss][Ee][Ee][Nn]%s(%w+)")
+        if nick then
             local time = self.nicks[nick:lower()]
             local col = self.selene.ircColor
             if time then
