@@ -6,6 +6,7 @@ Plugin = class("Plugin")
 Plugin.priority = 0
 
 function Plugin:initialize(selene)
+    self.priority = self.priority or 0
     self.selene = selene
 end
 

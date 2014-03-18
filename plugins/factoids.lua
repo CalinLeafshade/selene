@@ -93,8 +93,8 @@ function factoids:OnChat(user,channel,message)
                 else
                     self.selene:sendChat(channel,"That's already in the dictionary. Use 'forget' to remove it")
                 end
+                return true
             end
-            return true
         end
     end
 end

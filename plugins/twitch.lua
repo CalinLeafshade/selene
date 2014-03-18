@@ -80,22 +80,32 @@ function twitch:list(channel)
 end
 
 function twitch:update(loud)
-    for i,v in pairs(self.subs) do
-        local success, stream = pcall(function() return self:getStream(i) end)
-		if success then
-			if stream and not v.stream then
-				if loud then
-					self.selene:sendChat(v.ircChannel, i .. " has just started streaming on twitch.tv: http://www.twitch.tv/" .. i)
-				end
-				v.stream = stream
-			elseif not stream and v.stream then
-				if loud then
-					self.selene:sendChat(v.ircChannel, i .. " has stopped streaming.")
-				end
-				v.stream = nil
-			end
-		end
-    end
+    local co = self.co or coroutine.create(function(loud)
+        local last
+        while true do 
+            local v
+            last, v = next(self.subs, last)
+            if last and v then
+                local success, stream = pcall(function() return self:getStream(last) end)
+		        if success then
+			        if stream and not v.stream then
+				        if loud then
+					        self.selene:sendChat(v.ircChannel, i .. " has just started streaming on twitch.tv: http://www.twitch.tv/" .. i)
+        				end
+                    end
+	    			v.stream = stream
+		    	elseif not stream and v.stream then
+			    	if loud then
+				    	self.selene:sendChat(v.ircChannel, i .. " has stopped streaming.")
+    				end
+	    			v.stream = nil
+		    	end
+    		end
+            loud = coroutine.yield()
+        end
+    end)
+    coroutine.resume(co, loud)
+    self.co = co
 end
 
 function twitch:OnTick()
@@ -113,13 +123,14 @@ function twitch:OnChat(user,channel,message)
         caught = false
         if mess == "twitch" then
             self:list(channel)
-            return
+            return true
         end
         words = {}
         string.gsub(mess, "(%a+)", function (w)
             table.insert(words, w)
         end)
         local cmd, arg = words[2], words[3]
+        print(cmd, arg)
         if cmd == "sub" then
             if self:subscribe(arg,channel) then
                 self.selene:sendChat(channel, "Ok, I'll notify you if they start streaming")
@@ -172,12 +183,8 @@ function twitch:getStream(user)
         sink = ltn12.sink.table(t)
     }
     local data = table.concat(t)
-    local stat, decoded = pcall(function() return json:decode(data) end)
-    if stat and decoded and type(decoded) == "table" then
-		return decoded.stream
-	else
-		error("Couldnt encode from twitch: " .. data)
-	end
+    decoded = json:decode(data)
+    return decoded and decoded.stream
 end
 
 return twitch
