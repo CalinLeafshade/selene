@@ -6,7 +6,7 @@ function factoids:initialize(...)
     Plugin.initialize(self,...)
     self.factoids = {}
     self:load()
-    self.priority = math.huge
+    self.priority = 9999
 end
 
 function factoids:load()
