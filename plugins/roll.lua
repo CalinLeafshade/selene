@@ -28,6 +28,7 @@ function roll:OnChat(user,channel,message)
 			else
 				self.selene:sendChat(channel, col("Malformed request, pal", 4))
 			end
+            return true
 		end
 	end
 end

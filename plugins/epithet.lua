@@ -44,6 +44,7 @@ function epithet:OnChat(user,channel,message)
         else
             self.selene:sendChat(channel, "You dont have the privilege for that")
         end
+        return true
     end
 end
 

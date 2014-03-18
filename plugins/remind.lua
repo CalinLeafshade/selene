@@ -78,12 +78,13 @@ function remind:OnChat(user,channel,message)
             scale = secondsIn[scale] or secondsIn[scale .. "s"]
             if not scale then
                 self.selene:sendChat(channel, "I dont understand" ..  s)
-                return
+                return true
             end
             local time = scale * tonumber(count)
             if nick == "me" then nick = user.nick end
             self:add(nick, time, text, channel)
             self.selene:sendChat(channel, "Ok, i'll do that")
+            return true
         end
     end
 end

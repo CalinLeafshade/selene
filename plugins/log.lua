@@ -4,6 +4,7 @@ local logger = Plugin:subclass("logger")
 
 function logger:initialize(selene)
     self.selene = selene
+    self.priority = -math.huge --first
 end
 
 function logger:log(channel, text)

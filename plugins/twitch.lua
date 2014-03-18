@@ -110,6 +110,7 @@ function twitch:OnChat(user,channel,message)
     local direct, mess = self.selene:isDirect(message)
     if direct then
         mess = mess:lower()
+        caught = false
         if mess == "twitch" then
             self:list(channel)
             return
@@ -125,12 +126,14 @@ function twitch:OnChat(user,channel,message)
             else
                 self.selene:sendChat(channel, "I am already monitoring their channel.")
             end
+            return true
         elseif cmd == "unsub" then
             if self:unsubscribe(arg) then
                 self.selene:sendChat(channel, "Successfully unsubscribed")
             else
                 self.selene:sendChat(channel, "I am not monitoring their channel")
             end
+            return true
         elseif cmd == "list" then
             local list = ""
             for i,v in pairs(self.subs) do
@@ -144,6 +147,7 @@ function twitch:OnChat(user,channel,message)
             else
                 self.selene:sendChat(channel, "This is the current sublist: " .. list)
             end
+            return true
         elseif cmd == "status" then
 			local success, stream = pcall(function() return self:getStream(arg) end)
 			if success then
@@ -156,6 +160,7 @@ function twitch:OnChat(user,channel,message)
 				if stream then self.selene:error(stream) end
 				self.selene:sendChat(channel, "Failed to get stream info.")
 			end
+            return true
         end
     end 
 end

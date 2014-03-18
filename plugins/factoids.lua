@@ -1,10 +1,12 @@
 
 local factoids = Plugin:subclass("factoids")
 
+
 function factoids:initialize(...)
     Plugin.initialize(self,...)
     self.factoids = {}
     self:load()
+    self.priority = math.huge
 end
 
 function factoids:load()

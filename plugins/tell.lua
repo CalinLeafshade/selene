@@ -70,6 +70,7 @@ function tell:OnChat(user,channel,message)
         local text = mess:sub(6 + to:len() + 1)
         self:add(user.nick, to, text)
         self.selene:sendChat(channel, "Ok " .. user.nick .. ", I'll tell " .. to .. " that next time I see them.")
+        return true
     end
 end
 

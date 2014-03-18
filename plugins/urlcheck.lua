@@ -3,7 +3,7 @@ local http = require("socket.http")
 local ltn12 = require('ltn12')
 
 local url = Plugin:subclass("url")
-
+url.priority = -math.huge
 function url:isHTML(u)
     r,c,h = http.request{
         method = "HEAD",

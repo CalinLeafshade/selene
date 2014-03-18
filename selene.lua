@@ -54,7 +54,9 @@ function Selene:initialize(conf)
                 return a.priority < b.priority
             end)
             for i,v in ipairs(self.plugins or {}) do
-                v[hookName](v,...)
+                if v[hookName](v,...) then -- caught hook
+                    break
+                end
             end
         end
         return function(...)

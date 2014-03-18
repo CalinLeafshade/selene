@@ -14,6 +14,7 @@ function seen:OnChat(user,channel,message)
             else
                 self.selene:sendChat(channel, table.concat{col(user.nick,2), ", I haven't seen ", col(nick,4)})
             end
+            return true
         end
     end
     self:record(user.nick, message)

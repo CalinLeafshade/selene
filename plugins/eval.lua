@@ -10,7 +10,7 @@ function eval:OnChat(user,channel,message)
         for i,v in ipairs(disallowed) do
             if fn:match(v) then
                 self.selene:sendChat(channel, "Sorry " .. user.nick .. ". Loops arent allowed")
-                return
+                return true
             end
         end
         local fn, err = loadstring(fn)
@@ -24,6 +24,8 @@ function eval:OnChat(user,channel,message)
         else
             self.selene:sendChat(channel, "There was an error compiling your expression")
         end
+        return true
+
     end 
 end
 
