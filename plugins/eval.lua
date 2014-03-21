@@ -6,7 +6,7 @@ local disallowed = {"for", "while", "repeat"}
 function eval:OnChat(user,channel,message)
     local direct, mess = self.selene:isDirect(message)
     if direct and mess:lower():sub(1,4) == "eval" then
-        local fn = "do _ENV = {math = math} return " .. mess:sub(5) .. " end"
+        local fn = "do _ENV = {math = math, string = string} return " .. mess:sub(5) .. " end"
         for i,v in ipairs(disallowed) do
             if fn:match(v) then
                 self.selene:sendChat(channel, "Sorry " .. user.nick .. ". Loops arent allowed")
@@ -17,6 +17,7 @@ function eval:OnChat(user,channel,message)
         if fn then
             local ok, val = pcall(fn)
             if ok then
+				val = tostring(val)
                 self.selene:sendChat(channel, "The answer is: " .. self.selene.ircColor(val,2))
             else
                 self.selene:sendChat(channel, "There was an error running your expression")
