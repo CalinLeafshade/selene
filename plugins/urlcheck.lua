@@ -20,6 +20,7 @@ function unesc(str)
     str = string.gsub(str, "&bull;", "")
     str = string.gsub(str, "&lt;", "<")
     str = string.gsub(str, "&gt;", ">")
+	str = string.gsub(str, "&%a+;", "") -- strip all other escape sequences
     return str
 end
 
@@ -47,6 +48,7 @@ function url:OnChat(user,channel,message)
         u = string.gsub(u,"https://", "http://")
         local t = self:checkURL(u)
         if t then
+			t = t:gsub("%c", "") -- strip newlines and other control chars
             self.selene:sendChat(channel, unesc(t))
         end
     end

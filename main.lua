@@ -1,6 +1,7 @@
 
 package.path = './lib/?/init.lua;./lib/?.lua;' .. package.path
 
+require('util')
 table.inspect = require('inspect')
 local posix = require('posix')
 require('irc')
