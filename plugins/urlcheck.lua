@@ -48,7 +48,7 @@ function url:OnChat(user,channel,message)
         u = string.gsub(u,"https://", "http://")
         local t = self:checkURL(u)
         if t then
-			t = t:gsub("%c", "") -- strip newlines and other control chars
+			t = t:gsub("%c", ""):trim() -- strip newlines and other control chars
             self.selene:sendChat(channel, unesc(t))
         end
     end
