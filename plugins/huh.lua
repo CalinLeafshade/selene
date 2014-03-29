@@ -1,8 +1,10 @@
 -- Plugin to catch all direct but uncaught messages
 
+
+
 local huh = Plugin:subclass("huh")
 huh.priority = math.huge
-local huhs = {"Huh?", "What?", "I don't understand.", "You trippin'?" }
+local huhs = {"Huh?", "What?", "I don't understand.", "You trippin'?", "Listen here, you little bother..." }
 
 function huh:OnChat(user,channel,message)
     if self.selene:isDirect(message) then
