@@ -15,7 +15,7 @@ function url:isHTML(u)
 end
 
 function unesc(str)
-    str = string.gsub(str, "&#%d+;", function(d) return string.char(tonumber(d:sub(3,-2))) end)
+    --str = string.gsub(str, "&#%d+;", function(d) return string.char(tonumber(d:sub(3,-2))) end)
     str = string.gsub(str, "&amp;", "&")
     str = string.gsub(str, "&bull;", "")
     str = string.gsub(str, "&lt;", "<")
